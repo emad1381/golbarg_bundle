@@ -1,0 +1,1 @@
+{"description":"Personal panel and data service.","engines":{"node":">=18.0.0"},"license":"MIT","main":"server.js","name":"golbarg","scripts":{"start":"node server.js"},"version":"1.0.0"}

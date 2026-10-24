@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#07101c">
+  <title>پنل کنترل گلبرگ</title>
+  <link rel="preload" href="/fonts/jetbrains-mono-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="ambient" aria-hidden="true">
+    <span class="orb orb-a"></span>
+    <span class="orb orb-b"></span>
+    <span class="ambient-grid"></span>
+  </div>
+
+  <div id="login-view" class="login-wrap" hidden>
+    <main class="login-shell">
+      <section class="login-intro">
+        <span class="brand">
+          <span class="brand-mark" aria-hidden="true"><span></span></span>
+          <span class="brand-name">golbarg<span>panel</span></span>
+        </span>
+        <p class="eyebrow"><span class="eyebrow-line"></span>سرویس لبه گلبرگ · ایران</p>
+        <h1>ترافیک تو،<br><span>از مسیر بهتر.</span></h1>
+        <p class="login-lede">وارد شو تا سرویس رو مدیریت کنی: وضعیت زنده، ترافیک، اتصال‌های فعال و مقصد — همه از همین پنل.</p>
+        <div class="route login-route" role="img" aria-label="مسیر ترافیک از کاربر ایران از طریق گلبرگ به سرور خارج">
+          <div class="route-node">
+            <span class="route-dot"></span>
+            <span>کاربر · ایران</span>
+          </div>
+          <div class="route-track"><span class="route-packet"></span></div>
+          <div class="route-node route-node-active">
+            <span class="route-dot"></span>
+            <span>لبه گلبرگ</span>
+          </div>
+          <div class="route-track"><span class="route-packet route-packet-2"></span></div>
+          <div class="route-node">
+            <span class="route-dot"></span>
+            <span>سرور خارج</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="login-card">
+        <p class="login-label">دسترسی مدیر</p>
+        <h2>ورود به پنل</h2>
+        <form id="login-form" class="login-form">
+          <label>رمز عبور مدیر
+            <input id="login-password" name="password" type="password" autocomplete="current-password" required autofocus dir="ltr">
+          </label>
+          <p class="error" id="login-error" role="alert" hidden></p>
+          <button class="btn btn-primary btn-block" type="submit" id="login-submit">
+            ورود به پنل کنترل
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M19 12H5m6 6-6-6 6-6"></path>
+            </svg>
+          </button>
+        </form>
+        <p class="fine">رمز عبور از متغیر محیطی <code dir="ltr">ADMIN_PASS</code> خوانده می‌شود. اگر ست نشده باشد، هنگام شروع سرویس یک رمز تصادفی ساخته و فقط یک بار در لاگ سرویس چاپ می‌شود.</p>
+      </section>
+    </main>
+  </div>
+
+  <div id="dash-view" class="shell" hidden>
+    <header class="topbar">
+      <span class="brand">
+        <span class="brand-mark" aria-hidden="true"><span></span></span>
+        <span class="brand-name">golbarg<span>panel</span></span>
+      </span>
+      <div class="topbar-meta">
+        <span class="status-pill" id="status-pill" data-state="connecting">
+          <span class="lamp" id="lamp" aria-hidden="true"></span>
+          <span id="top-status">در حال اتصال</span>
+        </span>
+        <span class="meta-divider" aria-hidden="true"></span>
+        <span class="meta-item">
+          <span class="meta-label">آپتایم</span>
+          <span id="uptime" class="mono" dir="ltr">—</span>
+        </span>
+        <button class="linkbtn" type="button" id="btn-logout">
+          خروج
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M14 17l-5-5 5-5M9 12h12"></path>
+            <path d="M9 4H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <div class="route" id="route" role="img" aria-label="مسیر ترافیک از کاربر ایران از طریق گلبرگ به سرور خارج">
+            <div class="route-node">
+              <span class="route-dot"></span>
+              <span>کاربر · ایران</span>
+            </div>
+            <div class="route-track"><span class="route-packet"></span></div>
+            <div class="route-node route-node-active">
+              <span class="route-dot"></span>
+              <span>لبه گلبرگ</span>
+            </div>
+            <div class="route-track"><span class="route-packet route-packet-2"></span></div>
+            <div class="route-node">
+              <span class="route-dot"></span>
+              <span>سرور خارج</span>
+            </div>
+          </div>
+
+          <p class="eyebrow"><span class="eyebrow-line"></span>کانال داده مستقیم روی گلبرگ</p>
+          <h1><span id="hero-title">در حال بررسی سرویس</span><span class="cursor" aria-hidden="true"></span></h1>
+          <p class="hero-note" id="hero-note">در حال خواندن وضعیت از کانتینر…</p>
+          <div class="chips">
+            <span class="chip"><span class="chip-dot"></span>کانال داده مستقیم</span>
+            <span class="chip" id="chip-data-port">پورت داده —</span>
+            <span class="chip" id="chip-stream" hidden><span class="chip-dot"></span><span id="chip-stream-text" dir="ltr">—</span></span>
+            <span class="chip"><span class="chip-dot chip-dot-data"></span><span id="chip-target" dir="ltr">—</span></span>
+          </div>
+        </div>
+
+        <div class="hero-actions">
+          <button id="btn-toggle" class="btn btn-hero" type="button" disabled>
+            <span class="btn-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+                <path d="M12 3v8"></path>
+                <path d="M6.3 6.3a8 8 0 1 0 11.4 0"></path>
+              </svg>
+            </span>
+            <span id="toggle-label">توقف سرویس</span>
+          </button>
+          <p class="hero-hint">در حالت توقف، اتصال‌های جدید فوراً رد می‌شوند؛ اتصال‌های فعلی تا پایان ادامه پیدا می‌کنند.</p>
+        </div>
+      </section>
+
+      <section class="endpoint-card" aria-labelledby="target-label">
+        <div class="endpoint-head">
+          <div>
+            <p class="label" id="target-label"><span class="label-dot"></span><span class="mode-badge" id="badge-direct" dir="ltr"></span><span id="title-direct"></span></p>
+            <p class="endpoint-sub" id="sub-direct"></p>
+          </div>
+          <span class="endpoint-badge" id="target-reach" dir="ltr">…</span>
+        </div>
+        <div class="endpoint-row">
+          <code id="target-current" dir="ltr">—</code>
+        </div>
+        <p class="endpoint-note" id="note-direct"></p>
+        <form id="target-form" class="stack endpoint-form">
+          <label><span id="label-direct-host"></span> <span class="label-hint" id="hint-direct-host"></span>
+            <input id="target-host" name="host" dir="ltr" spellcheck="false" autocomplete="off" maxlength="253" required>
+          </label>
+          <label><span id="label-direct-port"></span>
+            <input id="target-port" name="port" dir="ltr" inputmode="numeric" type="number" min="1" max="65535" required>
+          </label>
+          <div class="row">
+            <button class="btn btn-primary" type="submit" id="target-save"></button>
+            <span class="hint" id="hint-direct-newonly"></span>
+          </div>
+        </form>
+        <p class="fine" id="fine-direct"></p>
+      </section>
+
+      <section class="endpoint-card endpoint-card-alt" aria-labelledby="ws-label">
+        <div class="endpoint-head">
+          <div>
+            <p class="label" id="ws-label"><span class="label-dot label-dot-data"></span><span class="mode-badge mode-badge-data" id="badge-ws" dir="ltr"></span><span id="title-ws"></span></p>
+            <p class="endpoint-sub" id="sub-ws"></p>
+          </div>
+          <span class="endpoint-badge" id="ws-reach" dir="ltr">…</span>
+        </div>
+        <div class="endpoint-row">
+          <code id="ws-current" dir="ltr">—</code>
+        </div>
+        <div class="endpoint-row">
+          <code id="ws-path" class="is-placeholder" dir="ltr">—</code>
+        </div>
+        <p class="endpoint-note" id="note-ws"></p>
+        <form id="ws-form" class="stack endpoint-form">
+          <label><span id="label-ws-host"></span> <span class="label-hint" id="hint-ws-host"></span>
+            <input id="ws-host" name="host" dir="ltr" spellcheck="false" autocomplete="off" maxlength="253" required>
+          </label>
+          <label><span id="label-ws-port"></span>
+            <input id="ws-port" name="port" dir="ltr" inputmode="numeric" type="number" min="1" max="65535" required>
+          </label>
+          <div class="row">
+            <button class="btn btn-primary" type="submit" id="ws-save"></button>
+            <span class="hint" id="hint-ws-newonly"></span>
+          </div>
+        </form>
+        <p class="fine" id="fine-ws"></p>
+      </section>
+
+      <div class="grid">
+        <section class="panel panel-traffic" aria-labelledby="traffic-heading">
+          <div class="panel-head">
+            <div class="panel-title">
+              <span class="panel-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 12h4l2-7 4 14 2-7h6"></path>
+                </svg>
+              </span>
+              <h2 id="traffic-heading">ترافیک</h2>
+            </div>
+            <span class="hint" id="traffic-hint">مجموع این نشست</span>
+          </div>
+          <div class="spark">
+            <div class="spark-meta"><span>نرخ دانلود</span><span class="spark-rate" id="spark-rate" dir="ltr">idle</span></div>
+            <svg id="spark" viewBox="0 0 240 64" preserveAspectRatio="none" role="img" aria-label="نرخ دانلود اخیر">
+              <defs>
+                <linearGradient id="spark-fill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#6fd6ff" stop-opacity="0.26"></stop>
+                  <stop offset="100%" stop-color="#6fd6ff" stop-opacity="0"></stop>
+                </linearGradient>
+                <filter id="spark-glow" x="-20%" y="-50%" width="140%" height="200%">
+                  <feGaussianBlur stdDeviation="2.2" result="blur"></feGaussianBlur>
+                  <feMerge>
+                    <feMergeNode in="blur"></feMergeNode>
+                    <feMergeNode in="SourceGraphic"></feMergeNode>
+                  </feMerge>
+                </filter>
+              </defs>
+              <polygon id="spark-area" points=""></polygon>
+              <polyline id="spark-line" points="" filter="url(#spark-glow)"></polyline>
+            </svg>
+          </div>
+          <dl class="stats">
+            <div><dt>دانلود (خارج ← کاربر)</dt><dd id="stat-down" dir="ltr">—</dd></div>
+            <div><dt>آپلود (کاربر ← خارج)</dt><dd id="stat-up" dir="ltr">—</dd></div>
+            <div><dt>اتصال فعال</dt><dd id="stat-active" dir="ltr">—</dd></div>
+            <div><dt>کل اتصال‌ها</dt><dd id="stat-total" dir="ltr">—</dd></div>
+          </dl>
+          <div class="meter">
+            <div class="meter-head"><span>ظرفیت اتصال هم‌زمان</span><span id="limit-text" dir="ltr">0 / 512</span></div>
+            <progress id="limit-bar" class="meter-bar" max="512" value="0" aria-label="ظرفیت اتصال">0%</progress>
+          </div>
+          <p class="panel-note">ترافیک از کانتینر دو بار عبور می‌کند (ورود + خروج)، پس مصرف پهنای‌باند پلتفرم تقریباً دو برابر حجم واقعی کاربر حساب می‌شود.</p>
+        </section>
+
+        <section class="panel panel-activity" aria-labelledby="activity-heading">
+          <div class="panel-head">
+            <div class="panel-title">
+              <span class="panel-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 6h16M4 12h16M4 18h10"></path>
+                </svg>
+              </span>
+              <h2 id="activity-heading">رویدادها</h2>
+            </div>
+            <span class="hint">آخرین رویدادها</span>
+          </div>
+          <ol class="log" id="event-list"></ol>
+        </section>
+
+        <section class="panel panel-connections" aria-labelledby="connections-heading">
+          <div class="panel-head">
+            <div class="panel-title">
+              <span class="panel-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="5" cy="12" r="2"></circle>
+                  <circle cx="19" cy="5" r="2"></circle>
+                  <circle cx="19" cy="19" r="2"></circle>
+                  <path d="M7 12h5a3 3 0 0 0 3-3V7"></path>
+                  <path d="M7 12h5a3 3 0 0 1 3 3v2"></path>
+                </svg>
+              </span>
+              <h2 id="connections-heading">اتصال‌های فعال</h2>
+            </div>
+            <span class="hint" id="conn-count">۰ فعال</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">شناسه</th>
+                  <th scope="col">کلاینت</th>
+                  <th scope="col">مقصد</th>
+                  <th scope="col">وضعیت</th>
+                  <th scope="col">مدت</th>
+                  <th scope="col">دانلود</th>
+                  <th scope="col">آپلود</th>
+                  <th scope="col"><span class="sr">قطع</span></th>
+                </tr>
+              </thead>
+              <tbody id="conn-body"></tbody>
+            </table>
+          </div>
+          <p class="empty" id="conn-empty">هیچ اتصال فعالی نیست.</p>
+        </section>
+      </div>
+    </main>
+
+    <footer class="foot">
+      <span>golbarg panel <span id="version" class="mono" dir="ltr"></span></span>
+      <span>اندپوینت سرویس عمومی است؛ امنیت کاربر نهایی با پروتکل روی سرور خارج است.</span>
+    </footer>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="/app.js"></script>
+</body>
+</html>
